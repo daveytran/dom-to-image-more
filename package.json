@@ -1,6 +1,6 @@
 {
     "name": "dom-to-image-more",
-    "version": "3.3.1",
+    "version": "3.4.0",
     "description": "Generates an image from a DOM node using HTML5 canvas and SVG",
     "main": "dist/dom-to-image-more.min.js",
     "devDependencies": {
@@ -65,7 +65,10 @@
         "Nate Stuyvesant @nstuyvesant",
         "King Wang @eachmawzw",
         "TMM Schmit @tmmschmit",
-        "Aravind @codesculpture"
+        "Aravind @codesculpture",
+        "Shi Wenyu @cWenyu",
+        "David Burns @davidburns573",
+        "Yujia Cheng @YujiaCheng1996"
     ],
     "license": "MIT",
     "bugs": {
