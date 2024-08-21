@@ -279,6 +279,15 @@
                     .catch(done);
             });
 
+            it('should not copy web font', function (done) {
+                this.timeout(5000);
+                loadTestPage('fonts/dom-node.html', 'fonts/style.css', 'fonts/control-image-no-font')
+                    .then(() => renderToPng(domNode(), { disableEmbedFonts: true }))
+                    .then(check)
+                    .then(done)
+                    .catch(done);
+            });
+
             it('should render images', function (done) {
                 this.timeout(30000);
                 loadTestPage('images/dom-node.html', 'images/style.css')
@@ -646,7 +655,7 @@
                 return lastIndex !== index
                     ? html + str.substring(lastIndex, index)
                     : html;
-                }
+            }
 
             function getImageDataURL(image, mimetype) {
                 var canvas = document.createElement('canvas');
