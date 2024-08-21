@@ -82,6 +82,7 @@
      * @param {Boolean} options.cacheBust - set to true to cache bust by appending the time to the request url
      * @param {String} options.styleCaching - set to 'strict', 'relaxed' to select style caching rules
      * @param {Boolean} options.copyDefaultStyles - set to false to disable use of default styles of elements
+     * @param {Boolean} options.disableEmbedFonts - set to true to disable font embedding into the SVG output.
      * @param {Object} options.corsImg - When the image is restricted by the server from cross-domain requests, the proxy address is passed in to get the image
      *         - @param {String} url - eg: https://cors-anywhere.herokuapp.com/
      *         - @param {Enumerator} method - get, post
@@ -95,12 +96,13 @@
         options = options || {};
         copyOptions(options);
         let restorations = [];
+
         return Promise.resolve(node)
             .then(ensureElement)
             .then(function (clonee) {
                 return cloneNode(clonee, options, null, ownerWindow);
             })
-            .then(embedFonts)
+            .then(options.disableEmbedFonts ? Promise.resolve(node) : embedFonts)
             .then(inlineImages)
             .then(applyOptions)
             .then(makeSvgDataUri)
@@ -439,7 +441,10 @@
 
             function getRenderedChildren(original) {
                 if (util.isShadowSlotElement(original)) {
-                    return original.assignedNodes(); // shadow DOM <slot> has "assigned nodes" as rendered children
+                    const assignedNodes = original.assignedNodes();
+                    
+                    if (assignedNodes && assignedNodes.length() > 0)
+                        return assignedNodes; // shadow DOM <slot> has "assigned nodes" as rendered children
                 }
                 return original.childNodes;
             }
@@ -605,6 +610,7 @@
             return node;
         });
     }
+
     function newUtil() {
         let uid_index = 0;
 
@@ -660,7 +666,7 @@
         function isInShadowRoot(value) {
             return (
                 value !== null &&
-                Object.prototype.hasOwnProperty.call(value, 'getRootNode') &&
+                'getRootNode' in value &&
                 isShadowRoot(value.getRootNode())
             );
         }
@@ -1118,12 +1124,7 @@
             function getCssRules(styleSheets) {
                 const cssRules = [];
                 styleSheets.forEach(function (sheet) {
-                    if (
-                        Object.prototype.hasOwnProperty.call(
-                            Object.getPrototypeOf(sheet),
-                            'cssRules'
-                        )
-                    ) {
+                    if ('cssRules' in Object.getPrototypeOf(sheet)) {
                         try {
                             util.asArray(sheet.cssRules || []).forEach(
                                 cssRules.push.bind(cssRules)

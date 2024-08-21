@@ -273,12 +273,17 @@
 
             it('should render web fonts', function (done) {
                 this.timeout(5000);
-                loadTestPage(
-                    'fonts/dom-node.html',
-                    'fonts/style.css',
-                    'fonts/control-image'
-                )
+                loadTestPage('fonts/dom-node.html','fonts/style.css', 'fonts/control-image')
                     .then(renderToPngAndCheck)
+                    .then(done)
+                    .catch(done);
+            });
+
+            it('should not copy web font', function (done) {
+                this.timeout(5000);
+                loadTestPage('fonts/dom-node.html', 'fonts/style.css', 'fonts/control-image-no-font')
+                    .then(() => renderToPng(domNode(), { disableEmbedFonts: true }))
+                    .then(check)
                     .then(done)
                     .catch(done);
             });
@@ -571,10 +576,12 @@
                 const controlUrl = getImageDataURL(controlImage(), 'image/png');
 
                 if (imageUrl !== controlUrl) {
+                    var escapedImage = escapeImage(image.src);
+
                     console.debug(`
                     <html>
                         <body>
-                            <h2>Source</h2>\n<img src='${image.src}'/>
+                            <h2>Source</h2>\n<img src='${escapedImage}'/>
                             <h2>Output</h2>\n<img src='${imageUrl}'/>
                             <h2>Control</h2>\n<img src='${controlUrl}'/>
                         </body>
@@ -586,6 +593,68 @@
                     controlUrl,
                     'rendered and control images should be same'
                 );
+
+                function escapeImage(image) {
+                    if (image.indexOf('image/svg') >= 0){
+                        const svgStart = image.indexOf('<svg');
+                        const svgEnd = image.lastIndexOf('</svg>');
+                        const prefix = image.substring(0, svgStart);
+                        const postfix = image.substring(svgEnd + 6);
+                        const embeddedSvg = image.substring(svgStart, svgEnd + 6);
+                        const escapedSvg = escapeHtml(embeddedSvg);
+                        return prefix + escapedSvg + postfix;
+                    } else {
+                        return image;
+                    }
+                }
+            }
+
+            const matchHtmlRegExp = /["'&<>]/;
+            function escapeHtml(string) {
+                var str = '' + string;
+                var match = matchHtmlRegExp.exec(str);
+              
+                if (!match) {
+                    return str;
+                }
+              
+                var escape;
+                var html = '';
+                var index = 0;
+                var lastIndex = 0;
+              
+                for (index = match.index; index < str.length; index++) {
+                    switch (str.charCodeAt(index)) {
+                    case 34: // "
+                        escape = '&quot;';
+                        break;
+                    case 38: // &
+                        escape = '&amp;';
+                        break;
+                    case 39: // '
+                        escape = '&#39;';
+                        break;
+                    case 60: // <
+                        escape = '&lt;';
+                        break;
+                    case 62: // >
+                        escape = '&gt;';
+                        break;
+                    default:
+                        continue;
+                    }
+              
+                    if (lastIndex !== index) {
+                        html += str.substring(lastIndex, index);
+                    }
+              
+                    lastIndex = index + 1;
+                    html += escape;
+                }
+              
+                return lastIndex !== index
+                    ? html + str.substring(lastIndex, index)
+                    : html;
             }
 
             function getImageDataURL(image, mimetype) {
