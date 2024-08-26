@@ -666,7 +666,7 @@
         function isInShadowRoot(value) {
             return (
                 value !== null &&
-                'getRootNode' in value &&
+                Object.prototype.hasOwnProperty.call(value, 'getRootNode') &&
                 isShadowRoot(value.getRootNode())
             );
         }
@@ -1124,7 +1124,12 @@
             function getCssRules(styleSheets) {
                 const cssRules = [];
                 styleSheets.forEach(function (sheet) {
-                    if ('cssRules' in Object.getPrototypeOf(sheet)) {
+                    if (
+                        Object.prototype.hasOwnProperty.call(
+                            Object.getPrototypeOf(sheet),
+                            'cssRules'
+                        )
+                    ) {
                         try {
                             util.asArray(sheet.cssRules || []).forEach(
                                 cssRules.push.bind(cssRules)
