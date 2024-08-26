@@ -666,7 +666,7 @@
         function isInShadowRoot(value) {
             return (
                 value !== null &&
-                Object.prototype.hasOwnProperty.call(value, 'getRootNode') &&
+                Object.hasOwn(value, 'getRootNode') &&
                 isShadowRoot(value.getRootNode())
             );
         }
@@ -938,7 +938,7 @@
                         try {
                             return JSON.parse(JSON.stringify(data));
                         } catch (e) {
-                            fail('corsImg.data is missing or invalid', e.toString());
+                            fail('corsImg.data is missing or invalid:' + e.toString());
                             return;
                         }
                     }
@@ -1125,7 +1125,7 @@
                 const cssRules = [];
                 styleSheets.forEach(function (sheet) {
                     if (
-                        Object.prototype.hasOwnProperty.call(
+                        Object.hasOwn(
                             Object.getPrototypeOf(sheet),
                             'cssRules'
                         )

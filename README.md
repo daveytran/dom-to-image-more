@@ -260,6 +260,8 @@ and render on the server._`
 
 ## Dependencies
 
+Uses Object.hasOwn() so needs at least Chrome/Edge 93, Firefox 92, Opera 79. Safari 15.4 or Node 16.9.0
+
 ### Source
 
 Only standard lib is currently used, but make sure your browser supports:
@@ -356,7 +358,9 @@ SNDST00M (optimize), Joseph White (performance CSS), Phani Rithvij (test), David
 DOLCIMASCOLO (packaging), Zee (ZM) @zm-cttae (many major updates), Joshua Walsh
 @JoshuaWalsh (Firefox issues), Emre Coban @emrecoban (documentation), Nate Stuyvesant
 @nstuyvesant (fixes), King Wang @eachmawzw (CORS image proxy), TMM Schmit @tmmschmit
-(useCredentialsFilters)
+(useCredentialsFilters), Aravind @codesculpture (fix overridden props),
+Shi Wenyu @cWenyu (shadow slot fix), David Burns @davidburns573
+and Yujia Cheng @YujiaCheng1996 (font copy optional)
 
 ## License
 
