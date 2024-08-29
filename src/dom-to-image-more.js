@@ -442,9 +442,8 @@
             function getRenderedChildren(original) {
                 if (util.isShadowSlotElement(original)) {
                     const assignedNodes = original.assignedNodes();
-                    
-                    if (assignedNodes && assignedNodes.length() > 0)
-                        return assignedNodes; // shadow DOM <slot> has "assigned nodes" as rendered children
+
+                    if (assignedNodes && assignedNodes.length > 0) return assignedNodes; // shadow DOM <slot> has "assigned nodes" as rendered children
                 }
                 return original.childNodes;
             }
@@ -666,7 +665,7 @@
         function isInShadowRoot(value) {
             return (
                 value !== null &&
-                Object.hasOwn(value, 'getRootNode') &&
+                'getRootNode' in value &&
                 isShadowRoot(value.getRootNode())
             );
         }
@@ -1124,12 +1123,7 @@
             function getCssRules(styleSheets) {
                 const cssRules = [];
                 styleSheets.forEach(function (sheet) {
-                    if (
-                        Object.hasOwn(
-                            Object.getPrototypeOf(sheet),
-                            'cssRules'
-                        )
-                    ) {
+                    if ('cssRules' in Object.getPrototypeOf(sheet)) {
                         try {
                             util.asArray(sheet.cssRules || []).forEach(
                                 cssRules.push.bind(cssRules)
