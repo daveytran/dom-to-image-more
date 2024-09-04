@@ -168,6 +168,30 @@ A function taking DOM node as argument. Should return true if passed node should
 included in the output (excluding node means excluding it's children as well). Not called
 on the root node.
 
+#### adjustClonedNode
+
+A function that will be invoked on each node as they are cloned. Useful to adjust nodes in any way needed before the conversion.
+Note that this be invoked before the onclone callback. 
+The handler gets the original node, the cloned node, and a boolean that says if we've cloned the children already (so you can handle either before or after)
+
+Sample use:
+
+```const adjustClone = (node, clone, after) => {
+  if (!after && clone.id === 'element') {
+    clone.style.transform = 'translateY(100px)';
+  }
+  return clone;                   
+}```
+
+const wrapper = document.getElementById('wrapper');
+const blob =  domtoimage.toBlob(wrapper, { adjustClonedNode: adjustClone});
+
+#### onclone
+
+A function taking the cloned and modified DOM node as argument. It allows to make final adjustements to the elements before rendering, on the whole clone, after all elements have been individually cloned. Note that this will be invoked after all the onclone callbacks have been fired. 
+
+The cloned DOM might differ a lot from the original DOM, for example canvas will be replaced with image tags, some class might have changed, the style are inlined. It can be useful to log the clone to get a better senses of the transformations.
+
 #### bgcolor
 
 A string value for the background color, any valid CSS color value.
