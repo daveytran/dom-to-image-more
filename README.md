@@ -181,7 +181,8 @@ Sample use:
     clone.style.transform = 'translateY(100px)';
   }
   return clone;                   
-}```
+}
+```
 
 const wrapper = document.getElementById('wrapper');
 const blob =  domtoimage.toBlob(wrapper, { adjustClonedNode: adjustClone});
