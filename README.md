@@ -386,7 +386,7 @@ DOLCIMASCOLO (packaging), Zee (ZM) @zm-cttae (many major updates), Joshua Walsh
 @nstuyvesant (fixes), King Wang @eachmawzw (CORS image proxy), TMM Schmit @tmmschmit
 (useCredentialsFilters), Aravind @codesculpture (fix overridden props), Shi Wenyu @cWenyu
 (shadow slot fix), David Burns @davidburns573 and Yujia Cheng @YujiaCheng1996 (font copy
-optional)
+optional), Julien Dorra @juliendorra (documentation)
 
 ## License
 

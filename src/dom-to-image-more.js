@@ -663,11 +663,9 @@
         }
 
         function isInShadowRoot(value) {
-            return (
-                value !== null &&
-                'getRootNode' in value &&
-                isShadowRoot(value.getRootNode())
-            );
+            // not calling the method, getting the method
+            if (value === null || value === undefined || value.getRootNode === undefined) return false;
+            return isShadowRoot(value.getRootNode());
         }
 
         function isElement(value) {
@@ -1123,7 +1121,8 @@
             function getCssRules(styleSheets) {
                 const cssRules = [];
                 styleSheets.forEach(function (sheet) {
-                    if ('cssRules' in Object.getPrototypeOf(sheet)) {
+                    const sheetProto = Object.getPrototypeOf(sheet);
+                    if (Object.prototype.hasOwnProperty.call(sheetProto, 'cssRules')) {
                         try {
                             util.asArray(sheet.cssRules || []).forEach(
                                 cssRules.push.bind(cssRules)
