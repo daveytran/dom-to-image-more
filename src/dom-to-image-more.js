@@ -649,8 +649,8 @@
             const ownerDocument = node ? node.ownerDocument : undefined;
             return (
                 (ownerDocument ? ownerDocument.defaultView : undefined) ||
-                global ||
-                window
+                window ||
+                global
             );
         }
 
