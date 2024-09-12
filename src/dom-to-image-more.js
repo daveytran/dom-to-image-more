@@ -950,7 +950,7 @@
         }
 
         function escapeRegEx(string) {
-            return string.replace(/([.*+?^${}()|[]\/\\])/g, '\\$1');
+            return string.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
         }
 
         function delay(ms) {
