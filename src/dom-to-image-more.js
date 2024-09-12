@@ -664,7 +664,8 @@
 
         function isInShadowRoot(value) {
             // not calling the method, getting the method
-            if (value === null || value === undefined || value.getRootNode === undefined) return false;
+            if (value === null || value === undefined || value.getRootNode === undefined)
+                return false;
             return isShadowRoot(value.getRootNode());
         }
 
@@ -950,7 +951,7 @@
         }
 
         function escapeRegEx(string) {
-            return string.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
+            return string.replace(/([.*+?^${}()|[\]/\\])/g, '\\$1');
         }
 
         function delay(ms) {

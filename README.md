@@ -170,9 +170,10 @@ on the root node.
 
 #### adjustClonedNode
 
-A function that will be invoked on each node as they are cloned. Useful to adjust nodes in any way needed before the conversion.
-Note that this be invoked before the onclone callback. 
-The handler gets the original node, the cloned node, and a boolean that says if we've cloned the children already (so you can handle either before or after)
+A function that will be invoked on each node as they are cloned. Useful to adjust nodes in
+any way needed before the conversion. Note that this be invoked before the onclone
+callback. The handler gets the original node, the cloned node, and a boolean that says if
+we've cloned the children already (so you can handle either before or after)
 
 Sample use:
 
@@ -180,18 +181,23 @@ Sample use:
   if (!after && clone.id === 'element') {
     clone.style.transform = 'translateY(100px)';
   }
-  return clone;                   
+  return clone;
 }
 ```
 
-const wrapper = document.getElementById('wrapper');
-const blob =  domtoimage.toBlob(wrapper, { adjustClonedNode: adjustClone});
+const wrapper = document.getElementById('wrapper'); const blob =
+domtoimage.toBlob(wrapper, { adjustClonedNode: adjustClone});
 
 #### onclone
 
-A function taking the cloned and modified DOM node as argument. It allows to make final adjustements to the elements before rendering, on the whole clone, after all elements have been individually cloned. Note that this will be invoked after all the onclone callbacks have been fired. 
+A function taking the cloned and modified DOM node as argument. It allows to make final
+adjustements to the elements before rendering, on the whole clone, after all elements have
+been individually cloned. Note that this will be invoked after all the onclone callbacks
+have been fired.
 
-The cloned DOM might differ a lot from the original DOM, for example canvas will be replaced with image tags, some class might have changed, the style are inlined. It can be useful to log the clone to get a better senses of the transformations.
+The cloned DOM might differ a lot from the original DOM, for example canvas will be
+replaced with image tags, some class might have changed, the style are inlined. It can be
+useful to log the clone to get a better senses of the transformations.
 
 #### bgcolor
 
@@ -386,7 +392,8 @@ DOLCIMASCOLO (packaging), Zee (ZM) @zm-cttae (many major updates), Joshua Walsh
 @nstuyvesant (fixes), King Wang @eachmawzw (CORS image proxy), TMM Schmit @tmmschmit
 (useCredentialsFilters), Aravind @codesculpture (fix overridden props), Shi Wenyu @cWenyu
 (shadow slot fix), David Burns @davidburns573 and Yujia Cheng @YujiaCheng1996 (font copy
-optional), Julien Dorra @juliendorra (documentation)
+optional), Julien Dorra @juliendorra (documentation), Sean Zhang @SeanZhang-eaton (regex
+fixes)
 
 ## License
 
