@@ -783,11 +783,20 @@
             }
 
             return new Promise(function (resolve, reject) {
+                // Create an SVG element to house the image
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                
+                // and create the Image element to insert into that wrapper
                 const image = new Image();
+
                 if (domtoimage.impl.options.useCredentials) {
                     image.crossOrigin = 'use-credentials';
                 }
+
                 image.onload = function () {
+                    // Cleanup: remove theimage from the document
+                    document.body.removeChild(svg);
+
                     if (window && window.requestAnimationFrame) {
                         // In order to work around a Firefox bug (webcompat/web-bugs#119834) we
                         // need to wait one extra frame before it's safe to read the image data.
@@ -799,8 +808,19 @@
                         resolve(image);
                     }
                 };
-                image.onerror = reject;
+                
+                image.onerror = (error) => {
+                    // Cleanup: remove the image from the document
+                    document.body.removeChild(svg);
+
+                    reject(error);
+                };
+
+                svg.appendChild(image);
                 image.src = uri;
+                
+                // Add the SVG to the document body (invisible)
+                document.body.appendChild(svg);
             });
         }
 
