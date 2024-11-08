@@ -26,6 +26,8 @@
         corsImg: undefined,
         // Callback for adjustClonedNode eventing (to allow adjusting clone's properties)
         adjustClonedNode: undefined,
+        // Callback to filter style properties to be included in the output
+        filterStyles: undefined,
     };
 
     const domtoimage = {
@@ -89,6 +91,7 @@
      *         - @param {Object} headers - eg: { "Content-Type", "application/json;charset=UTF-8" }
      *         - @param {Object} data - post payload
      * @param {Function} options.adjustClonedNode - callback for adjustClonedNode eventing (to allow adjusting clone's properties)
+     * @param {Function} options.filterStyles - Should return true if passed propertyName should be included in the output
      * @return {Promise} - A promise that is fulfilled with a SVG image data URL
      * */
     function toSvg(node, options) {
@@ -1272,6 +1275,12 @@
         const targetStyle = targetElement.style;
 
         util.asArray(sourceComputedStyles).forEach(function (name) {
+            if (options.filterStyles) {
+                if (!options.filterStyles(name)) {
+                    return;
+                }
+            }
+
             const sourceValue = sourceComputedStyles.getPropertyValue(name);
             const defaultValue = defaultStyle[name];
             const parentValue = parentComputedStyles

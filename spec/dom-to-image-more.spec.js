@@ -38,6 +38,22 @@
                     .catch(done);
             });
 
+            it('should handle filterStyles', function (done) {
+                function filterStyles(propertyName) {
+                    return propertyName !== 'background-color';
+                }
+
+                loadTestPage(
+                    'filterStyles/dom-node.html',
+                    'filterStyles/style.css',
+                    'filterStyles/control-image'
+                )
+                    .then(() => renderToPng(domNode(), { filterStyles: filterStyles }))
+                    .then(check)
+                    .then(done)
+                    .catch(done);
+            });
+
             it('should render to svg', function (done) {
                 loadTestPage(
                     'small/dom-node.html',
