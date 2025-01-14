@@ -39,7 +39,7 @@
             });
 
             it('should handle filterStyles', function (done) {
-                function filterStyles(propertyName) {
+                function filterStyles(node, propertyName) {
                     return propertyName !== 'background-color';
                 }
 

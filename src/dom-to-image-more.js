@@ -1276,7 +1276,7 @@
 
         util.asArray(sourceComputedStyles).forEach(function (name) {
             if (options.filterStyles) {
-                if (!options.filterStyles(name)) {
+                if (!options.filterStyles(sourceElement, name)) {
                     return;
                 }
             }
