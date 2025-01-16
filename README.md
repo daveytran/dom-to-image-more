@@ -59,7 +59,7 @@ var domtoimage = require('dom-to-image-more');
 ## Usage
 
 All the top level functions accept DOM node and rendering options, and return promises,
-which are fulfilled with corresponding data URLs.  
+which are fulfilled with corresponding data URLs.
 Get a PNG image base64-encoded data URL and display right away:
 
 ```javascript
@@ -167,6 +167,19 @@ _All the functions under `impl` are not public API and are exposed only for unit
 A function taking DOM node as argument. Should return true if passed node should be
 included in the output (excluding node means excluding it's children as well). Not called
 on the root node.
+
+#### filterStyles
+
+A function taking style propertie name as argument. Should return true if passed propertie should be
+included in the output
+
+Sample use:
+
+```
+  filterStyles(node, propertyName) {
+    return !propertyName.startssWith('--'); // to filter out CSS variables
+  }
+```
 
 #### adjustClonedNode
 
