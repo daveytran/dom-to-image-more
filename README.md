@@ -59,8 +59,8 @@ var domtoimage = require('dom-to-image-more');
 ## Usage
 
 All the top level functions accept DOM node and rendering options, and return promises,
-which are fulfilled with corresponding data URLs.
-Get a PNG image base64-encoded data URL and display right away:
+which are fulfilled with corresponding data URLs. Get a PNG image base64-encoded data URL
+and display right away:
 
 ```javascript
 var node = document.getElementById('my-node');
@@ -170,8 +170,8 @@ on the root node.
 
 #### filterStyles
 
-A function taking style propertie name as argument. Should return true if passed propertie should be
-included in the output
+A function taking style propertie name as argument. Should return true if passed propertie
+should be included in the output
 
 Sample use:
 
@@ -183,20 +183,22 @@ Sample use:
 
 #### ignoreCSSRuleErrors
 
-A boolean indicating whether to suppress console errors when CSS rules can't be accessed due to CORS restrictions or other issues. Default is `false` (errors will be logged).
+A boolean indicating whether to suppress console errors when CSS rules can't be accessed
+due to CORS restrictions or other issues. Default is `false` (errors will be logged).
 
 Sample use:
 
 ```javascript
-domtoimage.toPng(document.getElementById('my-node'), { 
-    ignoreCSSRuleErrors: true 
-})
-.then(function (dataUrl) {
-    // CSS rule errors will not be logged to the console
-    var img = new Image();
-    img.src = dataUrl;
-    document.body.appendChild(img);
-});
+domtoimage
+    .toPng(document.getElementById('my-node'), {
+        ignoreCSSRuleErrors: true,
+    })
+    .then(function (dataUrl) {
+        // CSS rule errors will not be logged to the console
+        var img = new Image();
+        img.src = dataUrl;
+        document.body.appendChild(img);
+    });
 ```
 
 #### adjustClonedNode
@@ -276,6 +278,10 @@ the `useCredentialFilters` array.
 Scale value to be applied on canvas's `ctx.scale()` on both x and y axis. Can be used to
 increase the image quality with higher image size.
 
+#### corsImg
+
+An object to configure the corsImg option.
+
 ### Alternative Solutions to CORS Policy Issue
 
 Are you facing a [CORS policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
@@ -284,6 +290,23 @@ can explore. Here are some options to consider:
 
 1. **Use the option.corsImg support by passing images** With this option, you can setup a
    proxy service that will process the requests in a safe CORS context.
+
+    ```javascript
+    domtoimage.toPng(node, {
+        corsImg: {
+            method: 'GET', // or 'POST', defaults to 'GET'
+            url: 'https://your-proxy-service.com/proxy?url=#{cors}', // #{cors} will be replaced with the actual image URL
+            headers: {
+                'Content-Type': 'application/json',
+                // Add any other headers your proxy service requires
+            },
+            data: {
+                // Any data to send with the request (especially useful for POST requests)
+                // String values containing #{cors} will be replaced with the actual image URL
+            },
+        },
+    });
+    ```
 
 2. **Use third-party services like [allOrigins](https://allorigins.win/).** With this
    service, you can fetch the source code or an image in base64 format from any website.
@@ -391,7 +414,8 @@ taken:
 
 ## Using Typescript
 
-TypeScript type definitions are now included with the package. No additional setup is required.
+TypeScript type definitions are now included with the package. No additional setup is
+required.
 
 Simply import and use as normal:
 
@@ -399,12 +423,13 @@ Simply import and use as normal:
 import domToImage from 'dom-to-image-more';
 
 // All options including the new ignoreCSSRuleErrors are properly typed
-domToImage.toPng(document.getElementById('my-node'), { 
-    ignoreCSSRuleErrors: true 
-})
-.then(function (dataUrl) {
-    // Use the dataUrl
-});
+domToImage
+    .toPng(document.getElementById('my-node'), {
+        ignoreCSSRuleErrors: true,
+    })
+    .then(function (dataUrl) {
+        // Use the dataUrl
+    });
 ```
 
 If you prefer, you can still use the original approach:

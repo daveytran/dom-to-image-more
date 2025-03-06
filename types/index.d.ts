@@ -21,7 +21,14 @@ export interface Options {
     onclone?: ((clone: Node) => void) | undefined;
     useCredentials?: boolean | undefined;
     useCredentialsFilters?: string[] | undefined;
-    corsImg?: string | undefined;
+    corsImg?:
+        | {
+              method?: string;
+              url?: string;
+              headers?: Record<string, string>;
+              data?: any;
+          }
+        | undefined;
     copyDefaultStyles?: boolean | undefined;
     styleCaching?: 'strict' | 'relaxed' | undefined;
     scale?: number | undefined;
