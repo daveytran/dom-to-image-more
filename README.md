@@ -181,6 +181,24 @@ Sample use:
   }
 ```
 
+#### ignoreCSSRuleErrors
+
+A boolean indicating whether to suppress console errors when CSS rules can't be accessed due to CORS restrictions or other issues. Default is `false` (errors will be logged).
+
+Sample use:
+
+```javascript
+domtoimage.toPng(document.getElementById('my-node'), { 
+    ignoreCSSRuleErrors: true 
+})
+.then(function (dataUrl) {
+    // CSS rule errors will not be logged to the console
+    var img = new Image();
+    img.src = dataUrl;
+    document.body.appendChild(img);
+});
+```
+
 #### adjustClonedNode
 
 A function that will be invoked on each node as they are cloned. Useful to adjust nodes in

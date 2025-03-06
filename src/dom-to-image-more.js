@@ -28,6 +28,8 @@
         adjustClonedNode: undefined,
         // Callback to filter style properties to be included in the output
         filterStyles: undefined,
+        // Option to ignore CSS rule errors (default is false, errors will be logged)
+        ignoreCSSRuleErrors: false,
     };
 
     const domtoimage = {
@@ -305,6 +307,12 @@
             domtoimage.impl.options.styleCaching = defaultOptions.styleCaching;
         } else {
             domtoimage.impl.options.styleCaching = options.styleCaching;
+        }
+
+        if (typeof options.ignoreCSSRuleErrors === 'undefined') {
+            domtoimage.impl.options.ignoreCSSRuleErrors = defaultOptions.ignoreCSSRuleErrors;
+        } else {
+            domtoimage.impl.options.ignoreCSSRuleErrors = options.ignoreCSSRuleErrors;
         }
     }
 
@@ -1152,10 +1160,12 @@
                                 cssRules.push.bind(cssRules)
                             );
                         } catch (e) {
-                            console.error(
-                                `domtoimage: Error while reading CSS rules from ${sheet.href}`,
-                                e.toString()
-                            );
+                            if (!domtoimage.impl.options.ignoreCSSRuleErrors) {
+                                console.error(
+                                    `domtoimage: Error while reading CSS rules from ${sheet.href}`,
+                                    e.toString()
+                                );
+                            }
                         }
                     }
                 });
@@ -1220,7 +1230,6 @@
                         util.asArray(node.childNodes).map(function (child) {
                             return inlineAll(child);
                         })
-                    );
                 }
             });
 
