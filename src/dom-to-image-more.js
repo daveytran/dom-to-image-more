@@ -956,9 +956,9 @@
                         if (request.response && request.response instanceof Blob) {
                             encoder.readAsDataURL(request.response);
                         } else {
+                            console.error('Invalid response type.',{ response: request.response });
                             fail(
-                                `Invalid response type. Expected Blob but got ${typeof request.response}`,
-                                request.response
+                                `Invalid response type. Expected Blob but got ${typeof request.response}`
                             );
                         }
                     }
@@ -982,8 +982,8 @@
                         }
                     }
 
-                    function fail(...message) {
-                        console.error(...message);
+                    function fail(message) {
+                        console.error(message);
                         resolve('');
                     }
                 });
