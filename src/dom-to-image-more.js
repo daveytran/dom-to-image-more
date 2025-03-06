@@ -310,7 +310,8 @@
         }
 
         if (typeof options.ignoreCSSRuleErrors === 'undefined') {
-            domtoimage.impl.options.ignoreCSSRuleErrors = defaultOptions.ignoreCSSRuleErrors;
+            domtoimage.impl.options.ignoreCSSRuleErrors =
+                defaultOptions.ignoreCSSRuleErrors;
         } else {
             domtoimage.impl.options.ignoreCSSRuleErrors = options.ignoreCSSRuleErrors;
         }
@@ -796,7 +797,7 @@
             return new Promise(function (resolve, reject) {
                 // Create an SVG element to house the image
                 const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                
+
                 // and create the Image element to insert into that wrapper
                 const image = new Image();
 
@@ -819,7 +820,7 @@
                         resolve(image);
                     }
                 };
-                
+
                 image.onerror = (error) => {
                     // Cleanup: remove the image from the document
                     document.body.removeChild(svg);
@@ -829,7 +830,7 @@
 
                 svg.appendChild(image);
                 image.src = uri;
-                
+
                 // Add the SVG to the document body (invisible)
                 document.body.appendChild(svg);
             });
@@ -950,12 +951,15 @@
                         encoder.onloadend = function () {
                             resolve(encoder.result);
                         };
-                        
+
                         // Ensure response is a valid Blob before using readAsDataURL
                         if (request.response && request.response instanceof Blob) {
                             encoder.readAsDataURL(request.response);
                         } else {
-                            fail(`Invalid response type. Expected Blob but got ${typeof request.response}`);
+                            fail(
+                                `Invalid response type. Expected Blob but got ${typeof request.response}`,
+                                request.response
+                            );
                         }
                     }
 
@@ -978,8 +982,8 @@
                         }
                     }
 
-                    function fail(message) {
-                        console.error(message);
+                    function fail(...message) {
+                        console.error(...message);
                         resolve('');
                     }
                 });
