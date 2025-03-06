@@ -391,6 +391,24 @@ taken:
 
 ## Using Typescript
 
+TypeScript type definitions are now included with the package. No additional setup is required.
+
+Simply import and use as normal:
+
+```javascript
+import domToImage from 'dom-to-image-more';
+
+// All options including the new ignoreCSSRuleErrors are properly typed
+domToImage.toPng(document.getElementById('my-node'), { 
+    ignoreCSSRuleErrors: true 
+})
+.then(function (dataUrl) {
+    // Use the dataUrl
+});
+```
+
+If you prefer, you can still use the original approach:
+
 1. Use original `dom-to-image` type definition
    `npm install @types/dom-to-image --save-dev`
 
