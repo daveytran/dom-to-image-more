@@ -950,7 +950,13 @@
                         encoder.onloadend = function () {
                             resolve(encoder.result);
                         };
-                        encoder.readAsDataURL(request.response);
+                        
+                        // Ensure response is a valid Blob before using readAsDataURL
+                        if (request.response && request.response instanceof Blob) {
+                            encoder.readAsDataURL(request.response);
+                        } else {
+                            fail(`Invalid response type. Expected Blob but got ${typeof request.response}`);
+                        }
                     }
 
                     function timeout() {
@@ -1230,6 +1236,7 @@
                         util.asArray(node.childNodes).map(function (child) {
                             return inlineAll(child);
                         })
+                    );
                 }
             });
 
